@@ -1,0 +1,95 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    
+    "Users": {
+      "$uid": {
+        // Users can read and write their own data
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid",
+        
+        // Responders can read civilian data but not write
+        ".read": "auth != null && root.child('Users').child(auth.uid).child('UserType').val() == 'emergency_responder'",
+        
+        // Validate user data
+        ".validate": "newData.hasChildren(['UserName', 'email', 'Phone', 'UserType'])",
+        
+        "UserName": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "email": { ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i)" },
+        "Phone": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "UserType": { ".validate": "newData.isString() && (newData.val() == 'civilian' || newData.val() == 'emergency_responder')" },
+        
+        // Prevent changing user type after creation
+        "UserType": {
+          ".validate": "!data.exists() || data.val() == newData.val()"
+        }
+      }
+    },
+    
+    "sos": {
+      // Anyone can read active emergencies
+      ".read": "auth != null",
+      
+      // Only authenticated users can create emergencies
+      ".write": "auth != null",
+      
+      "$emergencyId": {
+        // Validate emergency data
+        ".validate": "newData.hasChildren(['userId', 'lat', 'long', 'address', 'status'])",
+        
+        // Only the creator or responders can update an emergency
+        ".write": "auth != null && (auth.uid == newData.child('userId').val() || root.child('Users').child(auth.uid).child('UserType').val() == 'emergency_responder')",
+        
+        "userId": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "lat": { ".validate": "newData.isString() && newData.val().matches(/^-?\\d+(\\.\\d+)?$/)" },
+        "long": { ".validate": "newData.isString() && newData.val().matches(/^-?\\d+(\\.\\d+)?$/)" },
+        "address": { ".validate": "newData.isString()" },
+        "status": { ".validate": "newData.isString() && (newData.val() == 'active' || newData.val() == 'assigned' || newData.val() == 'completed' || newData.val() == 'cancelled')" }
+      }
+    },
+    
+    "activeResponders": {
+      // Anyone can read active responders
+      ".read": "auth != null",
+      
+      // Only responders can update their status
+      "$responderId": {
+        ".write": "auth != null && auth.uid == $responderId && root.child('Users').child(auth.uid).child('UserType').val() == 'emergency_responder'",
+        
+        // Validate responder data
+        ".validate": "newData.hasChildren(['lat', 'long', 'timestamp'])",
+        
+        "lat": { ".validate": "newData.isString() && newData.val().matches(/^-?\\d+(\\.\\d+)?$/)" },
+        "long": { ".validate": "newData.isString() && newData.val().matches(/^-?\\d+(\\.\\d+)?$/)" },
+        "timestamp": { ".validate": "newData.isString()" }
+      }
+    },
+    
+    "assigned": {
+      // Responders can read their assignments
+      "$responderId": {
+        ".read": "auth != null && (auth.uid == $responderId || root.child('Users').child(auth.uid).child('UserType').val() == 'emergency_responder')",
+        
+        // Only responders or the system can create assignments
+        ".write": "auth != null && (auth.uid == $responderId || root.child('Users').child(auth.uid).child('UserType').val() == 'emergency_responder')",
+        
+        // Validate assignment data
+        ".validate": "newData.hasChildren(['userID', 'userLat', 'userLong', 'responderID', 'status'])",
+        
+        "userID": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "userLat": { ".validate": "newData.isString() && newData.val().matches(/^-?\\d+(\\.\\d+)?$/)" },
+        "userLong": { ".validate": "newData.isString() && newData.val().matches(/^-?\\d+(\\.\\d+)?$/)" },
+        "responderID": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "status": { ".validate": "newData.isString() && (newData.val() == 'assigned' || newData.val() == 'en_route' || newData.val() == 'arrived' || newData.val() == 'completed')" }
+      }
+    },
+    
+    // Special path for connection status
+    ".info": {
+      "connected": {
+        ".read": "auth != null"
+      }
+    }
+  }
+}

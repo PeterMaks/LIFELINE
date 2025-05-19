@@ -1,0 +1,23 @@
+name: floating
+description: A Flutter plugin for Picture-in-Picture mode on Android.
+version: 5.0.1
+homepage: https://github.com/wrobel-mat/floating
+
+environment:
+  sdk: ">=2.12.0 <4.0.0"
+  flutter: ">=1.20.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: eu.wroblewscy.marcin.floating.floating
+        pluginClass: FloatingPlugin

@@ -1,0 +1,2 @@
+C:/Users/ADMIN/Desktop/Projects/public_emergency_app/android/app/.cxx/RelWithDebInfo/4v193c4o/x86/CMakeFiles/edit_cache.dir
+C:/Users/ADMIN/Desktop/Projects/public_emergency_app/android/app/.cxx/RelWithDebInfo/4v193c4o/x86/CMakeFiles/rebuild_cache.dir

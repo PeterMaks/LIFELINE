@@ -1,0 +1,1 @@
+var color=0xff2471A3;

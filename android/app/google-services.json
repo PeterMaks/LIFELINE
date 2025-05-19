@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "381962735090",
+    "project_id": "lifeline-7667d",
+    "storage_bucket": "lifeline-7667d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381962735090:android:81f4e5c6090e5d63c9ef6b",
+        "android_client_info": {
+          "package_name": "com.lifety.public_emergency_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcFFVO-yHBwWe8vpdHdUi4kKVgTp2NjTk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
