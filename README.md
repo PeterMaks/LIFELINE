@@ -30,7 +30,8 @@ This is a cross-platform mobile application designed to provide assistance in em
 ## Development Timeline
 
 - Sept 2024: Project started
-- TBC
+- May 2025: Project completion
+  
 
 ## Installation
 
